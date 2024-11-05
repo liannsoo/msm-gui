@@ -1,4 +1,5 @@
 class DirectorsController < ApplicationController
+  before_action :set_director, only: [:show, :edit, :update, :destroy]
   # Displays all directors
   def index
     matching_directors = Director.all
@@ -9,10 +10,14 @@ class DirectorsController < ApplicationController
 
   # Displays a specific director
   def show
-    the_id = params.fetch("path_id")
-    @the_director = Director.find(the_id)
+    the_id = params.fetch("id")
+    @director = Director.find_by(id: the_id)
 
-    render({ :template => "director_templates/show" })
+    if @director.nil?
+      redirect_to("/directors", alert: "Director not found.")
+    else
+      render({ :template => "director_templates/show" })
+    end
   end
 
   # Displays the youngest director
@@ -32,38 +37,47 @@ class DirectorsController < ApplicationController
   # Renders the new director form
   def new
     @director = Director.new
-    render({ :template => "director_templates/new" })
+    render(:template => "director_templates/new")
   end
 
-  # Creates a new director record
   def create
     @director = Director.new(director_params)
     if @director.save
-      redirect_to("/directors")
+      redirect_to directors_path, notice: 'Director was successfully created.'
     else
-      @list_of_directors = Director.all.order({ :created_at => :desc })
-      render({ :template => "director_templates/index" })
+      render(:template => "director_templates/new")
     end
   end
 
-  # Updates an existing director record
+  def edit
+    render(:template => "director_templates/edit")
+  end
+
   def update
-    @director = Director.find(params[:path_id])
     if @director.update(director_params)
-      redirect_to(director_path(@director))
+      redirect_to director_path(@director)
     else
-      render({ :template => "director_templates/edit" })
+      render(:template => "director_templates/edit")
     end
   end
 
-  # Deletes a specific director record
   def destroy
-    @director = Director.find(params[:path_id])
-    @director.destroy
-    redirect_to("/directors")
+    @director = Director.find(params[:id])
+    if @director.destroy
+      redirect_to directors_path, notice: 'Director was successfully deleted.'
+    else
+      redirect_to director_path(@director), alert: 'Could not delete director.'
+    end
   end
 
   private
+
+  def set_director
+    @director = Director.find_by(id: params[:id])
+    if @director.nil?
+      redirect_to directors_path, alert: 'Director not found.'
+    end
+  end
 
   def director_params
     params.require(:director).permit(:name, :dob, :bio, :image)

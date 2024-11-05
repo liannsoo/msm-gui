@@ -7,7 +7,7 @@ class ActorsController < ApplicationController
   end
 
   def show
-    the_id = params.fetch("path_id")
+    the_id = params.fetch("id")
     @the_actor = Actor.find(the_id)
 
     render({ :template => "actor_templates/show" })
@@ -28,12 +28,12 @@ class ActorsController < ApplicationController
   end
 
   def edit
-    @actor = Actor.find(params[:path_id])
+    @actor = Actor.find(params[:id])
     render({ :template => "actor_templates/edit" })
   end
 
   def update
-    @actor = Actor.find(params[:path_id])
+    @actor = Actor.find(params[:id])
     if @actor.update(actor_params)
       redirect_to(actor_path(@actor))
     else
@@ -42,7 +42,7 @@ class ActorsController < ApplicationController
   end
 
   def destroy
-    @actor = Actor.find(params[:path_id])
+    @actor = Actor.find(params[:id])
     @actor.destroy
     redirect_to("/actors")
   end

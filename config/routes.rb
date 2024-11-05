@@ -1,30 +1,31 @@
 Rails.application.routes.draw do
-  get("/", { :controller => "misc", :action => "homepage" })
+  root 'misc#homepage'
 
-  get("/directors/youngest", { :controller => "directors", :action => "max_dob" })
-  get("/directors/eldest", { :controller => "directors", :action => "min_dob" })
-  get("/directors", { :controller => "directors", :action => "index" })
-  get("/directors/new", { :controller => "directors", :action => "new" }) # Form to create new director
-  post("/directors", { :controller => "directors", :action => "create" }) # Action to save new director
-  get("/directors/:path_id", { :controller => "directors", :action => "show" })
-  get("/directors/:path_id/edit", { :controller => "directors", :action => "edit" }) # Form to edit director
-  patch("/directors/:path_id", { :controller => "directors", :action => "update" }) # Update director
-  delete("/directors/:path_id", { :controller => "directors", :action => "destroy" }) # Delete director
-  
-  get("/movies", { :controller => "movies", :action => "index" })
-  get("/movies/new", { :controller => "movies", :action => "new" }) # Form to create new movie
-  post("/movies", { :controller => "movies", :action => "create" }) # Save new movie
-  get("/movies/:path_id", { :controller => "movies", :action => "show" })
-  get("/movies/:path_id/edit", { :controller => "movies", :action => "edit" }) # Form to edit movie
-  patch("/movies/:path_id", { :controller => "movies", :action => "update" }) # Update movie
-  delete("/movies/:path_id", { :controller => "movies", :action => "destroy" }) # Delete movie
+  get '/directors/youngest', to: 'directors#max_dob'
+  get '/directors/eldest', to: 'directors#min_dob'
+  get '/directors', to: 'directors#index', as: 'directors'
+  get '/directors/new', to: 'directors#new', as: 'new_director'
+  post '/directors', to: 'directors#create'
+  get '/directors/:id/edit', to: 'directors#edit', as: 'edit_director'
+  get '/directors/:id', to: 'directors#show', as: 'director'
+  patch '/directors/:id', to: 'directors#update'
+  delete '/directors/:id', to: 'directors#destroy'
 
-  get("/actors", { :controller => "actors", :action => "index" })
-  get("/actors/new", { :controller => "actors", :action => "new" }) # Form to create new actor
-  post("/actors", { :controller => "actors", :action => "create" }) # Save new actor
-  get("/actors/:path_id", { :controller => "actors", :action => "show" })
-  get("/actors/:path_id/edit", { :controller => "actors", :action => "edit" }) # Form to edit actor
-  patch("/actors/:path_id", { :controller => "actors", :action => "update" }) # Update actor
-  delete("/actors/:path_id", { :controller => "actors", :action => "destroy" }) 
+  # Routes for movies
+  get '/movies', to: 'movies#index'
+  get '/movies/new', to: 'movies#new'
+  post '/movies', to: 'movies#create'
+  get '/movies/:id', to: 'movies#show', as: 'movie'
+  get '/movies/:id/edit', to: 'movies#edit', as: 'edit_movie'
+  patch '/movies/:id', to: 'movies#update'
+  delete '/movies/:id', to: 'movies#destroy'
 
+  # Routes for actors
+  get '/actors', to: 'actors#index'
+  get '/actors/new', to: 'actors#new', as: 'new_actor'
+  post '/actors', to: 'actors#create'
+  get '/actors/:id', to: 'actors#show', as: 'actor'
+  get '/actors/:id/edit', to: 'actors#edit', as: 'edit_actor'
+  patch '/actors/:id', to: 'actors#update'
+  delete '/actors/:id', to: 'actors#destroy'
 end
