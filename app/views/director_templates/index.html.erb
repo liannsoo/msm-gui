@@ -3,6 +3,31 @@
 </h1>
 
 <hr>
+<%= form_with url: "/directors", method: "post" do |form| %>
+  <div>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :dob %>
+    <%= form.date_field :dob %>
+  </div>
+
+  <div>
+    <%= form.label :bio %>
+    <%= form.text_area :bio %>
+  </div>
+
+  <div>
+    <%= form.label :image %>
+    <%= form.text_field :image %>
+  </div>
+
+  <%= form.submit "Create director" %>
+<% end %>
+
+<hr>
 
 <table border="1">
   <tr>
